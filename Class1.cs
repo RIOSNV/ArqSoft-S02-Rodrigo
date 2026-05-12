@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ahorcado
 {
     public class Juego
     {
-        private List<string> _palabras = new()
+        // Diccionario que contiene Palabra -> Pista
+        private Dictionary<string, string> _bancoPalabras = new()
         {
-            "arquitectura",
-            "interfaz",
-            "polimorfismo",
-            "encapsulamiento",
-            "herencia"
+            { "arquitectura", "Estructura y diseño lógico de un sistema de software." },
+            { "interfaz", "Punto de interacción y comunicación entre dos capas o sistemas." },
+            { "polimorfismo", "Capacidad de un objeto para ofrecer diferentes respuestas a un mismo mensaje." },
+            { "encapsulamiento", "Protección y aislamiento de los datos internos de un objeto." },
+            { "herencia", "Mecanismo para que una clase obtenga atributos y métodos de otra." }
         };
 
         private string _palabraSecreta;
+        private string _pistaActual;
         private List<char> _letrasUsadas;
         private int _intentosRestantes;
 
         public Juego()
         {
             var random = new Random();
-            _palabraSecreta = _palabras[random.Next(_palabras.Count)];
+            // Seleccionamos una entrada aleatoria del diccionario
+            var listaLlaves = new List<string>(_bancoPalabras.Keys);
+            _palabraSecreta = listaLlaves[random.Next(listaLlaves.Count)];
+            _pistaActual = _bancoPalabras[_palabraSecreta];
+
             _letrasUsadas = new List<char>();
             _intentosRestantes = 6;
         }
@@ -62,7 +69,7 @@ namespace Ahorcado
                 }
             }
 
-            // Si llega aquí, es porque se acabaron los intentos
+            // Game Over
             MostrarTablero();
             Console.WriteLine($"\nPerdiste. La palabra era: {_palabraSecreta}");
             PreguntarReinicio();
@@ -90,8 +97,21 @@ namespace Ahorcado
         private void MostrarTablero()
         {
             Console.Clear();
-            Console.WriteLine("=== AHORCADO ===");
+            Console.WriteLine("=== AHORCADO: MODO CLASE DIOS ===");
             MostrarAhorcado();
+
+            // Lógica de Pista: Se muestra cuando fallas 3 veces (te quedan 3 intentos o menos)
+            if (_intentosRestantes <= 3)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"[PISTA REVELADA]: {_pistaActual}");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("[PISTA]: Se revelará cuando te queden 3 intentos.");
+            }
+
             Console.WriteLine($"Intentos restantes: {_intentosRestantes}");
             Console.WriteLine($"Letras usadas: {string.Join(", ", _letrasUsadas)}");
             Console.Write("Palabra: ");
@@ -116,7 +136,6 @@ namespace Ahorcado
                 "  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n      |\n========="  // 6 errores
             };
 
-            // Mostramos la etapa basada en cuántos errores lleva el usuario
             Console.WriteLine(etapas[6 - _intentosRestantes]);
         }
     }
