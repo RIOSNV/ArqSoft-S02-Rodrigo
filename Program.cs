@@ -33,5 +33,5 @@ if (ui.PreguntarOtraVez())
 {
     var nuevoMotor = new Ahorcado.MotorAhorcado(repositorio);
     var nuevaUI = new Ahorcado.ConsolaUI(nuevoMotor);
-    // Nota: Para que el reinicio funcione, este bloque suele ir dentro de un bucle do-while.
+    // Nota: Para que el reinicio funcione, este bloque suele ir dentro de un bucle do-while
 }
