@@ -29,3 +29,4 @@
         public bool Perdido() => _intentosRestantes <= 0;
     }
 }
+/*ayer me llamo una niña, en medio del decespero...*/
