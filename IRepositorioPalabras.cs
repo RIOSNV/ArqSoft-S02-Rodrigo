@@ -1,4 +1,4 @@
-﻿/*namespace Ahorcado
+﻿namespace Ahorcado
 {
     public interface IRepositorioPalabras
     {
