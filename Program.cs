@@ -1,157 +1,74 @@
-﻿
+﻿using System;
+using System.Threading;
 
-// Menú principal
-
-Console.WriteLine("¿Qué juego quieres jugar?");
-
-Console.WriteLine("  1 — Ahorcado");
-
-Console.WriteLine("  2 — Viborita");
-
-Console.Write("Opción: ");
-
-var opcion = Console.ReadLine();
-
-
-
-if (opcion == "1")
-
+class Program
 {
-
-    // --- LÓGICA DEL AHORCADO ---
-
-    var repositorio = new Ahorcado.PalabrasEnMemoria();
-
-    var motor = new Ahorcado.MotorAhorcado(repositorio);
-
-    var ui = new Ahorcado.ConsolaUI(motor);
-
-
-
-    Console.WriteLine("=== AHORCADO ===");
-
-
-
-    while (!motor.Ganado() && !motor.Perdido())
-
+    static void Main(string[] args)
     {
+        Console.Title = "Game Center - Nodo";
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-        ui.MostrarTablero();
-
-        char letra = ui.PedirLetra();
-
-
-
-        if (motor.LetraYaUsada(letra))
-
+        while (true)
         {
+            Console.Clear();
+            DibujarMenu();
 
-            ui.MostrarMensaje("Ya usaste esa letra.");
+            int centroX = Console.WindowWidth / 2;
+            Console.SetCursorPosition(centroX - 10, 15);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(" >> Opción: ");
+            Console.ResetColor();
 
-            continue;
+            var opcion = Console.ReadLine();
 
+            if (opcion == "1")
+            {
+                // Inicia el Ahorcado desde la Clase Juego
+                Ahorcado.Juego partidaAhorcado = new Ahorcado.Juego();
+                partidaAhorcado.Jugar();
+            }
+            else if (opcion == "2")
+            {
+                // Inicia la Viborita desde la Clase ViboritaJuego
+                Ahorcado.ViboritaJuego partidaViborita = new Ahorcado.ViboritaJuego();
+                partidaViborita.Jugar();
+            }
+            else if (opcion.ToLower() == "exit")
+            {
+                break;
+            }
+        }
+    }
+
+    static void DibujarMenu()
+    {
+        string[] logo = {
+            " ██████╗  █████╗ ███╗   ███╗███████╗███████╗",
+            "██╔════╝ ██╔══██╗████╗ ████║██╔════╝██╔════╝",
+            "██║  ███╗███████║██╔████╔██║█████╗  ███████╗",
+            "██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ╚════██║",
+            "╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗███████║",
+            " ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝"
+        };
+
+        int centroX = Console.WindowWidth / 2;
+        int centroY = 4;
+
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        for (int i = 0; i < logo.Length; i++)
+        {
+            Console.SetCursorPosition(centroX - (logo[i].Length / 2), centroY + i);
+            Console.WriteLine(logo[i]);
         }
 
-        motor.RegistrarLetra(letra);
-
+        string[] opciones = { "1. El Ahorcado Clásico", "2. Viborita (Snake)", "Escribe 'exit' para salir" };
+        for (int i = 0; i < opciones.Length; i++)
+        {
+            Thread.Sleep(150);
+            Console.SetCursorPosition(centroX - (opciones[i].Length / 2), centroY + 8 + i);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(opciones[i]);
+        }
+        Console.ResetColor();
     }
-
-
-
-    ui.MostrarTablero();
-
-
-
-    if (motor.Ganado())
-
-        ui.MostrarMensaje($"\n¡Ganaste! La palabra era: {motor.PalabraSecreta}");
-
-    else
-
-        ui.MostrarMensaje($"\nPerdiste. La palabra era: {motor.PalabraSecreta}");
-
-
-
-    // Nota: El código original de 'PreguntarOtraVez' solo instanciaba
-
-    // pero no reiniciaba el bucle. Aquí se mantiene igual a tu fragmento.
-
-    if (ui.PreguntarOtraVez())
-
-    {
-
-        var nuevoMotor = new Ahorcado.MotorAhorcado(repositorio);
-
-        var nuevaUI = new Ahorcado.ConsolaUI(nuevoMotor);
-
-    }
-
 }
-
-else if (opcion == "2")
-
-{
-
-    // --- LÓGICA DE LA VIBORITA ---
-
-    var motor = new Ahorcado.MotorViborita();
-
-    var ui = new Ahorcado.ConsolaUIViborita(motor);
-
-
-
-    Console.CursorVisible = false;
-
-
-
-    while (!motor.Ganado() && !motor.Perdido())
-
-    {
-
-        ui.MostrarTablero();
-
-        var tecla = ui.LeerTecla();
-
-
-
-        if (tecla == ConsoleKey.Q) break;
-
-
-
-        if (tecla != ConsoleKey.NoName)
-
-            motor.CambiarDireccion(tecla);
-
-
-
-        motor.Avanzar();
-
-        Thread.Sleep(150); // velocidad del juego
-
-    }
-
-
-
-    ui.MostrarTablero();
-
-    ui.MostrarMensaje(motor.Ganado()
-
-        ? "\n¡Ganaste! Llegaste a 10 puntos."
-
-        : "\nGame over.");
-
-
-
-    Console.CursorVisible = true;
-
-}
-
-else
-
-{
-
-    Console.WriteLine("Opción no válida.");
-
-}
-
-
