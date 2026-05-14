@@ -1,11 +1,14 @@
 Juego controla turnos, dibuja el tablero, muestra mensajes y
 elige la palabra (S)
-
-Capturas de el juego 
-menu inicial 
-
 al hacer cambios en el modo de "clase dios" y bien separado me di cuenta que es mas facil depurar el codigo cuando lo haces en clases divididas que en una misma clase 
 ya que en una misma clase si haces algo mal tienes que leer muchisimas lineas para ver el problema.
+Capturas de el juego 
+
+
+
+
+
+menu inicial 
 
 <img width="1920" height="1080" alt="Captura de pantalla (64)" src="https://github.com/user-attachments/assets/4aaa0ea5-1828-4542-b06c-d3c93f5d39f2" />
 
