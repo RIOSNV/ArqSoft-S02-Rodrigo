@@ -1,5 +1,7 @@
 Juego controla turnos, dibuja el tablero, muestra mensajes y
 elige la palabra (S)
+
+
 al hacer cambios en el modo de "clase dios" y bien separado me di cuenta que es mas facil depurar el codigo cuando lo haces en clases divididas que en una misma clase 
 ya que en una misma clase si haces algo mal tienes que leer muchisimas lineas para ver el problema.
 Capturas de el juego 
